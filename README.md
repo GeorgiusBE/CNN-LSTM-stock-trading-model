@@ -3,7 +3,7 @@ Long-only trading strategy using CNN-LSTM networks
 
 <b> 1. Problem Statement </b>
 
-Using AMD daily stock price data from the past 6 years (from 2017-01-01 and 2024-03-01) to produce a CNN-LSTM based neural network model that can predict daily up-moves of
+Using AMD daily stock price data between 2017-01-01 and 2024-03-01 to produce a CNN-LSTM based neural network model that can predict daily up-moves of
 the AMD stock.
 
 <b> 2. Target Variable </b>
