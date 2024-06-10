@@ -88,6 +88,29 @@ The process is similar to the one above, the only difference is that 20 features
 
 Lastly, there is one thing I want to address. In the EDA section, I used the unscaled dataset for the computation of VIF. This is because VIF measures the linear relationship between the features, and so if I scale the dataset, I could potentially 'disrupt' their linear relationship, and therefore I could arrive at a different VIF score. However, the VIF score that is computed in this section (i.e. during the VIF-based feature selection) is going to be based on the scaled dataset. The reason is that the scaled dataset is used when performing Boruta and RFE, hence to maintain consistency in the feature selection process, I also use the scaled dataset for the VIF-based feature selection. It is important that the scaled dataset is used when performing Boruta and RFE because these techniques are based on the feature importance score, in which according to Strobl, Boulesteix, Zeileis, & Hothorn (2007), the feature importance score becomes unreliable if the features are not scaled
 
+<b> 9. Model Building </b>
+
+A CNN-LSTM network is simply a 1-Dimensional CNN layer/s followed by LSTM layer/s.
+
+Random search is used to perform hyper-parameter tuning. Note that we are tuning 3 models, each with a different dataset, where the first one uses the Boruta + VIF features, the second one uses RFE with 10 selected features + VIF, and the third one uses RFE with 20 selected features + VIF.
+
+<b> 10. Training Tuned Model </b>
+
+The tuned models from the previous section are now going to be trained using their respective training datasets. The training will be performed until the 200th epoch (unless it is stopped early by the early-stopping callback) and the loss function that is used is the Binary Cross Entropy function (since this is a binary classification problem). The early-stopping callback is set to monitor the accuracy score (computed on the validation dataset) and to have a patience of 10 (i.e. if the accuracy score does not improve in the next 10 epochs, the training will be stopped early). This is used to prevent the model from overfitting. Moreover, the Adam optimizer is going to be used to optimize the model’s parameters.
+
+<b> 11. Performance Evaluation </b>
+
+After all of the tuned models have been trained, these models' performances are going to be tested by the testing datasets. And then, based on their predictions, their performances are going to be evaluated using metrics such as the ROC-AUC score, accuracy, recall, precision, and F1-score.
+
+<b> 12. Back-Testing The Best Model </b>
+
+Financial metrics such as monthly returns, cumulative returns, Sharpe ratio, beta, alpha, and drawdowns are computed.
+
+<b> 13. Possible Improvements </b>
+
+- Transaction costs were not considered when setting the threshold level for an up-move. Therefore, transaction costs could be incorporated to ensure that the model is trained to only signal for an up-move when the return is large enough to cover the transaction costs.
+- The majority of the derived features are lagging indicators. Leading indicators such as the options price of AMD could be incorporated in the features.
+- An ensemble model (either a voting or stacking ensemble) could be created to improve the overall performance of the predictions.
 
 
 <b> Reference </b>
